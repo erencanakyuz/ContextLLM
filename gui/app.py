@@ -662,8 +662,8 @@ class ContextLLMApp(QMainWindow):
         toolbar_layout.setSpacing(8)
         toolbar_layout.setContentsMargins(15, 8, 15, 8)
         
-        # Process button (moved from actions section)
-        self.toolbar_process_btn = QPushButton("🔄 Process")
+        # Reset button (moved from actions section)
+        self.toolbar_process_btn = QPushButton("🔄 Reset")
         self.toolbar_process_btn.setObjectName("toolbarProcessBtn")
         self.toolbar_process_btn.setMinimumWidth(90)
         self.toolbar_process_btn.setMinimumHeight(32)
@@ -760,8 +760,8 @@ class ContextLLMApp(QMainWindow):
         
         file_menu.addSeparator()
         
-        # Process Files - moved from actions section
-        self.process_files_action = QAction("🔄 Process Files", self)
+        # Reset Files - moved from actions section
+        self.process_files_action = QAction("🔄 Reset Files", self)
         self.process_files_action.setShortcut("Ctrl+Return")
         self.process_files_action.setEnabled(False)
         self.process_files_action.triggered.connect(self.process_files)
@@ -857,7 +857,7 @@ class ContextLLMApp(QMainWindow):
         
         # Toolbar buttons (new)
         if hasattr(self, 'toolbar_process_btn'):
-            self.toolbar_process_btn.setToolTip("Process selected files (Ctrl+Enter)")
+            self.toolbar_process_btn.setToolTip("Reset selected files (Ctrl+Enter)")
         if hasattr(self, 'toolbar_save_btn'):
             self.toolbar_save_btn.setToolTip("Save aggregated content to file (Ctrl+S)")
         if hasattr(self, 'toolbar_tree_btn'):
@@ -2115,7 +2115,7 @@ class ContextLLMApp(QMainWindow):
         <h3>⌨️ Keyboard Shortcuts:</h3>
         <ul>
         <li><code>Ctrl+O</code> - Select folder</li>
-        <li><code>Ctrl+Enter</code> - Process files</li>
+                        <li><code>Ctrl+Enter</code> - Reset files</li>
         <li><code>Ctrl+S</code> - Save content</li>
         <li><code>Ctrl+C</code> - Copy to clipboard</li>
         <li><code>F5</code> - Refresh</li>
