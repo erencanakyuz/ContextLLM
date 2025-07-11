@@ -16,13 +16,13 @@ Filter specific files and extensions, then enhance your prompts with 20+ profess
 
 ### Main Interface
 <div align="center">
-  <img width="607" height="575" alt="ContextLLM Main Interface" src="https://github.com/user-attachments/assets/5c2474de-0cd3-43ba-bbad-ac20c974c0db" />
+  <img width="607" height="575" alt="ContextLLM Main Interface" src="https://github.com/user-attachments/assets/13d43798-9299-4648-b52c-3b35314c9919" />
   <p><em>Clean interface for processing local folders and GitHub repositories</em></p>
 </div>
 
 ### Professional Template Library
 <div align="center">
-  <img width="1482" height="506" alt="ContextLLM Template System" src="https://github.com/user-attachments/assets/66fec71f-3290-4d3b-a0c6-d0434a40f15c" />
+  <img width="1482" height="506" alt="ContextLLM Template System" src="https://github.com/user-attachments/assets/7bc67c49-5e27-4c9a-9c10-643789eb9d43" />
   <p><em>20+ professional prompts for enhanced AI interactions</em></p>
 </div>
 
