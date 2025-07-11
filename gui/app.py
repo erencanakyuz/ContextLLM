@@ -1907,7 +1907,6 @@ def main():
         if platform.system() == "Windows":
             try:
                 # Try to detect Windows version for better compatibility
-                import sys
                 win_version = sys.getwindowsversion()
                 
                 if win_version.build >= 22000:  # Windows 11
