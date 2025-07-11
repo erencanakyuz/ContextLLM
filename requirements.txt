@@ -1,0 +1,16 @@
+# ContextLLM Core Requirements
+# Minimal dependencies to run the application
+
+# GUI Framework - Essential
+PyQt6>=6.4.0
+
+# HTTP requests for GitHub API - Essential  
+requests>=2.28.0
+
+# AI token calculation - Essential for cost estimation
+tiktoken>=0.5.0
+
+# Optional dependencies (auto-fallback if missing)
+# colorama>=0.4.6      # For colored console output
+# gitpython>=3.1.0     # For advanced git operations
+# Pillow>=10.0.0       # For image processing

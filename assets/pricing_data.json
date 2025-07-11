@@ -1,0 +1,136 @@
+{
+    "models": {
+        "gpt-4o": {
+            "name": "GPT-4o",
+            "input_cost_per_1k": 0.0025,
+            "output_cost_per_1k": 0.01,
+            "context_window": 128000,
+            "provider": "OpenAI"
+        },
+        "gpt-4-turbo": {
+            "name": "GPT-4 Turbo",
+            "input_cost_per_1k": 0.01,
+            "output_cost_per_1k": 0.03,
+            "context_window": 128000,
+            "provider": "OpenAI"
+        },
+        "gpt-4.5": {
+            "name": "GPT-4.5",
+            "input_cost_per_1k": 0.002,
+            "output_cost_per_1k": 0.008,
+            "context_window": 200000,
+            "provider": "OpenAI",
+            "note": "Latest GPT-4.5 model - 2025 release"
+        },
+        "gpt-o3": {
+            "name": "GPT-o3 (Reasoning)",
+            "input_cost_per_1k": 0.001,
+            "output_cost_per_1k": 0.004,
+            "context_window": 128000,
+            "provider": "OpenAI",
+            "note": "Advanced reasoning model"
+        },
+        "gpt-o3-pro": {
+            "name": "GPT-o3 Pro",
+            "input_cost_per_1k": 0.0015,
+            "output_cost_per_1k": 0.006,
+            "context_window": 200000,
+            "provider": "OpenAI",
+            "note": "Professional reasoning model - 2025"
+        },
+        "gpt-o4-mini": {
+            "name": "GPT-o4 Mini",
+            "input_cost_per_1k": 0.0001,
+            "output_cost_per_1k": 0.0004,
+            "context_window": 128000,
+            "provider": "OpenAI",
+            "note": "Compact high-performance model - 2025"
+        },
+        "claude-4-sonnet": {
+            "name": "Claude 4 Sonnet",
+            "input_cost_per_1k": 0.003,
+            "output_cost_per_1k": 0.015,
+            "context_window": 200000,
+            "provider": "Anthropic",
+            "note": "Latest Claude 4 generation - 2025"
+        },
+        "claude-3-7-sonnet": {
+            "name": "Claude 3.7 Sonnet",
+            "input_cost_per_1k": 0.003,
+            "output_cost_per_1k": 0.015,
+            "context_window": 200000,
+            "provider": "Anthropic",
+            "note": "Hybrid reasoning model - 2025"
+        },
+        "claude-3-5-sonnet": {
+            "name": "Claude 3.5 Sonnet",
+            "input_cost_per_1k": 0.003,
+            "output_cost_per_1k": 0.015,
+            "context_window": 200000,
+            "provider": "Anthropic"
+        },
+        "gemini-2-5-pro": {
+            "name": "Gemini 2.5 Pro",
+            "input_cost_per_1k": 0.00125,
+            "output_cost_per_1k": 0.005,
+            "context_window": 1000000,
+            "provider": "Google",
+            "note": "Versatile multimodal titan - 2025"
+        },
+        "gemini-2-5-flash": {
+            "name": "Gemini 2.5 Flash",
+            "input_cost_per_1k": 0.000075,
+            "output_cost_per_1k": 0.0003,
+            "context_window": 1000000,
+            "provider": "Google",
+            "note": "Ultra-fast streaming responses - 2025"
+        },
+        "gemini-2-0-flash": {
+            "name": "Gemini 2.0 Flash",
+            "input_cost_per_1k": 0.000075,
+            "output_cost_per_1k": 0.0003,
+            "context_window": 1048576,
+            "provider": "Google"
+        },
+        "grok-3": {
+            "name": "Grok 3",
+            "input_cost_per_1k": 0.002,
+            "output_cost_per_1k": 0.008,
+            "context_window": 128000,
+            "provider": "xAI",
+            "note": " "
+        },
+        "grok-3-mini": {
+            "name": "Grok 3 Mini",
+            "input_cost_per_1k": 0.0005,
+            "output_cost_per_1k": 0.002,
+            "context_window": 128000,
+            "provider": "xAI",
+            "note": "Lightweight real-time model - 2025"
+        },
+        "deepseek-r1": {
+            "name": "DeepSeek R1",
+            "input_cost_per_1k": 0.0001,
+            "output_cost_per_1k": 0.0004,
+            "context_window": 64000,
+            "provider": "DeepSeek",
+            "note": "Affordable reasoning powerhouse - 2025"
+        },
+        "gpt-3.5-turbo": {
+            "name": "GPT-3.5 Turbo",
+            "input_cost_per_1k": 0.0005,
+            "output_cost_per_1k": 0.0015,
+            "context_window": 16385,
+            "provider": "OpenAI"
+        },
+        "gpt-4.1": {
+            "name": "GPT-4.1",
+            "input_cost_per_1k": 0.002,
+            "output_cost_per_1k": 0.008,
+            "context_window": 1000000,
+            "provider": "OpenAI",
+            "note": "Estimated pricing - actual may vary"
+        }
+    },
+    "last_updated": "2025-01-09"
+}
