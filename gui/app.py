@@ -267,6 +267,21 @@ class ContextLLMApp(QMainWindow):
         # Right side - Controls
         controls_layout = QHBoxLayout()
         
+        # File and token stats (moved from status bar)
+        self.files_label = QLabel("📁 0 files")
+        self.files_label.setObjectName("statsLabel")
+        self.files_label.setFont(QFont("Segoe UI", 11))
+        controls_layout.addWidget(self.files_label)
+        
+        controls_layout.addWidget(QLabel("|"))
+        
+        self.tokens_label = QLabel("🔢 0 tokens")
+        self.tokens_label.setObjectName("statsLabel")
+        self.tokens_label.setFont(QFont("Segoe UI", 11))
+        controls_layout.addWidget(self.tokens_label)
+        
+        controls_layout.addWidget(QLabel("|"))
+        
         # GitHub status
         self.github_status_label = QLabel("⚡ GitHub Ready")
         self.github_status_label.setObjectName("githubStatus")
@@ -714,27 +729,16 @@ class ContextLLMApp(QMainWindow):
         parent_splitter.addWidget(content_widget)
         
     def create_status_bar(self):
-        """Create enhanced status bar"""
+        """Create simplified status bar"""
         status_bar = QStatusBar()
         status_bar.setObjectName("statusBar")
         
-        # Left side - File and token stats
-        self.files_label = QLabel("📁 0 files")
-        self.files_label.setObjectName("statsLabel")
-        status_bar.addWidget(self.files_label)
-        
-        status_bar.addWidget(QLabel("|"))
-        
-        self.tokens_label = QLabel("🔢 0 tokens")
-        self.tokens_label.setObjectName("statsLabel")
-        status_bar.addWidget(self.tokens_label)
-        
-        # Center - Status messages
+        # Status messages
         self.status_message_label = QLabel("Ready to process files...")
         self.status_message_label.setObjectName("statusMessage")
-        status_bar.addPermanentWidget(self.status_message_label)
+        status_bar.addWidget(self.status_message_label)
         
-        # Right side - Cost estimate
+        # Cost estimate (moved to right side)
         self.cost_label = QLabel("💰 $0.000")
         self.cost_label.setObjectName("costLabel")
         status_bar.addPermanentWidget(self.cost_label)
@@ -953,7 +957,7 @@ class ContextLLMApp(QMainWindow):
                 border-radius: 12px;
             }}
             
-            #versionLabel, #githubStatus, #statusText, #infoText {{
+            #versionLabel, #githubStatus, #statusText, #infoText, #statsLabel {{
                 color: {colors['text_secondary']};
             }}
             
@@ -1174,16 +1178,12 @@ class ContextLLMApp(QMainWindow):
                 border-radius: 4px;
             }}
             
-            /* Colorful Toolbar Styling */
+            /* Colorful Toolbar Styling - Transparent Background */
             #colorfulToolbar {{
-                background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-                           stop: 0 {colors['primary']}, 
-                           stop: 0.3 #4CAF50, 
-                           stop: 0.6 #2196F3, 
-                           stop: 1 #9C27B0);
+                background: transparent;
                 border: none;
-                border-radius: 25px;
-                margin: 5px;
+                border-radius: 0px;
+                margin: 0px;
             }}
             
             /* Toolbar Button Styles */
