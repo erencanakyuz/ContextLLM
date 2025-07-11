@@ -574,16 +574,6 @@ class ContextLLMApp(QMainWindow):
         layout.setSpacing(12)  # Add spacing between elements
         layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
-        # Process button
-        self.process_btn = QPushButton("🔄 Process Files")
-        self.process_btn.setObjectName("primaryBtn")
-        self.process_btn.setMinimumHeight(40)
-        self.process_btn.setEnabled(False)
-        self.process_btn.clicked.connect(self.process_files)
-        layout.addWidget(self.process_btn)
-        
-        layout.addSpacing(10)  # Gap before action buttons
-        
         # Action buttons
         action_buttons = QHBoxLayout()
         action_buttons.setSpacing(8)  # Space between buttons
@@ -639,7 +629,7 @@ class ContextLLMApp(QMainWindow):
         content_tab = QWidget()
         content_layout = QVBoxLayout(content_tab)
         
-        # Content header with copy button
+        # Content header with colorful toolbar
         content_header_layout = QHBoxLayout()
         
         content_header = QLabel("📄 Aggregated Content")
@@ -649,14 +639,54 @@ class ContextLLMApp(QMainWindow):
         
         content_header_layout.addStretch()
         
-        # Copy button in header
+        # Colorful Toolbar with multiple buttons
+        toolbar_frame = QFrame()
+        toolbar_frame.setObjectName("colorfulToolbar")
+        toolbar_frame.setFixedHeight(50)
+        toolbar_layout = QHBoxLayout(toolbar_frame)
+        toolbar_layout.setSpacing(8)
+        toolbar_layout.setContentsMargins(15, 8, 15, 8)
+        
+        # Process button (moved from actions section)
+        self.toolbar_process_btn = QPushButton("🔄 Process")
+        self.toolbar_process_btn.setObjectName("toolbarProcessBtn")
+        self.toolbar_process_btn.setMinimumWidth(90)
+        self.toolbar_process_btn.setMinimumHeight(32)
+        self.toolbar_process_btn.setEnabled(False)
+        self.toolbar_process_btn.clicked.connect(self.process_files)
+        toolbar_layout.addWidget(self.toolbar_process_btn)
+        
+        # Copy button
         self.content_copy_btn = QPushButton("📋 Copy")
-        self.content_copy_btn.setObjectName("primaryBtn")
+        self.content_copy_btn.setObjectName("toolbarCopyBtn")
         self.content_copy_btn.setToolTip("Copy content to clipboard")
         self.content_copy_btn.clicked.connect(self.copy_to_clipboard)
-        self.content_copy_btn.setMinimumWidth(100)
-        self.content_copy_btn.setEnabled(False)  # Initially disabled
-        content_header_layout.addWidget(self.content_copy_btn)
+        self.content_copy_btn.setMinimumWidth(80)
+        self.content_copy_btn.setMinimumHeight(32)
+        self.content_copy_btn.setEnabled(False)
+        toolbar_layout.addWidget(self.content_copy_btn)
+        
+        # Save button
+        self.toolbar_save_btn = QPushButton("💾 Save")
+        self.toolbar_save_btn.setObjectName("toolbarSaveBtn")
+        self.toolbar_save_btn.setToolTip("Save content to file")
+        self.toolbar_save_btn.clicked.connect(self.save_content_as_file)
+        self.toolbar_save_btn.setMinimumWidth(80)
+        self.toolbar_save_btn.setMinimumHeight(32)
+        self.toolbar_save_btn.setEnabled(False)
+        toolbar_layout.addWidget(self.toolbar_save_btn)
+        
+        # Tree View button
+        self.toolbar_tree_btn = QPushButton("🌳 Tree")
+        self.toolbar_tree_btn.setObjectName("toolbarTreeBtn")
+        self.toolbar_tree_btn.setToolTip("Open tree view")
+        self.toolbar_tree_btn.clicked.connect(self.show_tree_view)
+        self.toolbar_tree_btn.setMinimumWidth(80)
+        self.toolbar_tree_btn.setMinimumHeight(32)
+        self.toolbar_tree_btn.setEnabled(False)
+        toolbar_layout.addWidget(self.toolbar_tree_btn)
+        
+        content_header_layout.addWidget(toolbar_frame)
         
         content_layout.addLayout(content_header_layout)
         
@@ -712,29 +742,77 @@ class ContextLLMApp(QMainWindow):
         self.setStatusBar(status_bar)
         
     def create_menu_bar(self):
-        """Create menu bar"""
+        """Create enhanced menu bar"""
         menubar = self.menuBar()
         
         # File menu
-        file_menu = menubar.addMenu("File")
+        file_menu = menubar.addMenu("📁 File")
         
-        open_action = QAction("Open Folder", self)
-        open_action.triggered.connect(self.select_folder)
-        file_menu.addAction(open_action)
+        # Source selection
+        open_folder_action = QAction("📂 Open Folder...", self)
+        open_folder_action.setShortcut("Ctrl+O")
+        open_folder_action.triggered.connect(self.select_folder)
+        file_menu.addAction(open_folder_action)
         
         file_menu.addSeparator()
         
-        exit_action = QAction("Exit", self)
+        # Process Files - moved from actions section
+        self.process_files_action = QAction("🔄 Process Files", self)
+        self.process_files_action.setShortcut("Ctrl+Return")
+        self.process_files_action.setEnabled(False)
+        self.process_files_action.triggered.connect(self.process_files)
+        file_menu.addAction(self.process_files_action)
+        
+        file_menu.addSeparator()
+        
+        # Export options
+        save_action = QAction("💾 Save Content...", self)
+        save_action.setShortcut("Ctrl+S")
+        save_action.triggered.connect(self.save_content_as_file)
+        file_menu.addAction(save_action)
+        
+        copy_action = QAction("📋 Copy to Clipboard", self)
+        copy_action.setShortcut("Ctrl+C")
+        copy_action.triggered.connect(self.copy_to_clipboard)
+        file_menu.addAction(copy_action)
+        
+        file_menu.addSeparator()
+        
+        exit_action = QAction("❌ Exit", self)
+        exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
         
-        # View menu (placeholder for future features)
-        _ = menubar.addMenu("View")
+        # View menu
+        view_menu = menubar.addMenu("👁️ View")
+        
+        tree_action = QAction("🌳 Tree View", self)
+        tree_action.setShortcut("Ctrl+T")
+        tree_action.triggered.connect(self.show_tree_view)
+        view_menu.addAction(tree_action)
+        
+        template_action = QAction("📝 Template Manager", self)
+        template_action.triggered.connect(self.show_template_manager)
+        view_menu.addAction(template_action)
+        
+        view_menu.addSeparator()
+        
+        refresh_action = QAction("🔄 Refresh", self)
+        refresh_action.setShortcut("F5")
+        refresh_action.triggered.connect(self.refresh_current_folder)
+        view_menu.addAction(refresh_action)
+        
+        # Tools menu
+        tools_menu = menubar.addMenu("🔧 Tools")
+        
+        settings_action = QAction("⚙️ Settings", self)
+        settings_action.triggered.connect(self.show_settings)
+        tools_menu.addAction(settings_action)
         
         # Help menu
-        help_menu = menubar.addMenu("Help")
+        help_menu = menubar.addMenu("❓ Help")
         
-        about_action = QAction("About", self)
+        about_action = QAction("ℹ️ About", self)
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
     
@@ -759,14 +837,31 @@ class ContextLLMApp(QMainWindow):
     
     def setup_tooltips(self):
         """Setup tooltips for UI elements"""
+        # Left panel buttons
         self.select_folder_btn.setToolTip("Select a local folder to process (Ctrl+O)")
         self.load_github_btn.setToolTip("Load files from GitHub repository")
-        self.process_btn.setToolTip("Process selected files (Ctrl+Enter)")
-        self.save_btn.setToolTip("Save aggregated content to file (Ctrl+S)")
-        self.copy_btn.setToolTip("Copy content to clipboard (Ctrl+C)")
-        self.refresh_btn.setToolTip("Refresh current source (F5)")
-        self.tree_btn.setToolTip("Show detailed file tree view (Ctrl+T)")
         
+        # Left panel buttons (if they exist)
+        if hasattr(self, 'save_btn'):
+            self.save_btn.setToolTip("Save aggregated content to file (Ctrl+S)")
+        if hasattr(self, 'copy_btn'):
+            self.copy_btn.setToolTip("Copy content to clipboard (Ctrl+C)")
+        if hasattr(self, 'refresh_btn'):
+            self.refresh_btn.setToolTip("Refresh current source (F5)")
+        if hasattr(self, 'tree_btn'):
+            self.tree_btn.setToolTip("Show detailed file tree view (Ctrl+T)")
+        
+        # Toolbar buttons (new)
+        if hasattr(self, 'toolbar_process_btn'):
+            self.toolbar_process_btn.setToolTip("Process selected files (Ctrl+Enter)")
+        if hasattr(self, 'toolbar_save_btn'):
+            self.toolbar_save_btn.setToolTip("Save aggregated content to file (Ctrl+S)")
+        if hasattr(self, 'toolbar_tree_btn'):
+            self.toolbar_tree_btn.setToolTip("Show detailed file tree view (Ctrl+T)")
+        if hasattr(self, 'content_copy_btn'):
+            self.content_copy_btn.setToolTip("Copy content to clipboard (Ctrl+C)")
+        
+        # Dropdowns and inputs
         self.model_dropdown.setToolTip("Select AI model for cost estimation")
         self.comment_removal_checkbox.setToolTip("Remove comments and docstrings from code files")
         self.template_dropdown.setToolTip("Choose a prompt template to apply")
@@ -1078,6 +1173,103 @@ class ContextLLMApp(QMainWindow):
                 padding: 4px;
                 border-radius: 4px;
             }}
+            
+            /* Colorful Toolbar Styling */
+            #colorfulToolbar {{
+                background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                           stop: 0 {colors['primary']}, 
+                           stop: 0.3 #4CAF50, 
+                           stop: 0.6 #2196F3, 
+                           stop: 1 #9C27B0);
+                border: none;
+                border-radius: 25px;
+                margin: 5px;
+            }}
+            
+            /* Toolbar Button Styles */
+            #toolbarProcessBtn {{
+                background-color: rgba(255, 255, 255, 0.9);
+                border: 2px solid #4CAF50;
+                color: #2E7D32;
+                font-weight: bold;
+                border-radius: 16px;
+                padding: 6px 12px;
+            }}
+            
+            #toolbarProcessBtn:hover {{
+                background-color: #4CAF50;
+                color: white;
+                transform: scale(1.05);
+            }}
+            
+            #toolbarProcessBtn:disabled {{
+                background-color: rgba(255, 255, 255, 0.5);
+                border-color: #CCCCCC;
+                color: #999999;
+            }}
+            
+            #toolbarCopyBtn {{
+                background-color: rgba(255, 255, 255, 0.9);
+                border: 2px solid #2196F3;
+                color: #1565C0;
+                font-weight: bold;
+                border-radius: 16px;
+                padding: 6px 12px;
+            }}
+            
+            #toolbarCopyBtn:hover {{
+                background-color: #2196F3;
+                color: white;
+                transform: scale(1.05);
+            }}
+            
+            #toolbarCopyBtn:disabled {{
+                background-color: rgba(255, 255, 255, 0.5);
+                border-color: #CCCCCC;
+                color: #999999;
+            }}
+            
+            #toolbarSaveBtn {{
+                background-color: rgba(255, 255, 255, 0.9);
+                border: 2px solid #FF9800;
+                color: #E65100;
+                font-weight: bold;
+                border-radius: 16px;
+                padding: 6px 12px;
+            }}
+            
+            #toolbarSaveBtn:hover {{
+                background-color: #FF9800;
+                color: white;
+                transform: scale(1.05);
+            }}
+            
+            #toolbarSaveBtn:disabled {{
+                background-color: rgba(255, 255, 255, 0.5);
+                border-color: #CCCCCC;
+                color: #999999;
+            }}
+            
+            #toolbarTreeBtn {{
+                background-color: rgba(255, 255, 255, 0.9);
+                border: 2px solid #9C27B0;
+                color: #7B1FA2;
+                font-weight: bold;
+                border-radius: 16px;
+                padding: 6px 12px;
+            }}
+            
+            #toolbarTreeBtn:hover {{
+                background-color: #9C27B0;
+                color: white;
+                transform: scale(1.05);
+            }}
+            
+            #toolbarTreeBtn:disabled {{
+                background-color: rgba(255, 255, 255, 0.5);
+                border-color: #CCCCCC;
+                color: #999999;
+            }}
         """)
         self.logger.info("Applied light theme styling using theme system")
     
@@ -1351,11 +1543,27 @@ class ContextLLMApp(QMainWindow):
     
     def update_button_states(self, has_files: bool = False, has_content: bool = False):
         """Update button states"""
-        self.process_btn.setEnabled(has_files)
-        self.tree_btn.setEnabled(has_files)
-        self.save_btn.setEnabled(has_content)
-        self.copy_btn.setEnabled(has_content)
-        self.content_copy_btn.setEnabled(has_content)
+        # Traditional buttons in left panel (only if they exist)
+        if hasattr(self, 'save_btn'):
+            self.save_btn.setEnabled(has_content)
+        if hasattr(self, 'copy_btn'):
+            self.copy_btn.setEnabled(has_content)
+        if hasattr(self, 'tree_btn'):
+            self.tree_btn.setEnabled(has_files)
+        
+        # Toolbar buttons in content panel
+        if hasattr(self, 'toolbar_process_btn'):
+            self.toolbar_process_btn.setEnabled(has_files)
+        if hasattr(self, 'toolbar_save_btn'):
+            self.toolbar_save_btn.setEnabled(has_content)
+        if hasattr(self, 'toolbar_tree_btn'):
+            self.toolbar_tree_btn.setEnabled(has_files)
+        if hasattr(self, 'content_copy_btn'):
+            self.content_copy_btn.setEnabled(has_content)
+        
+        # Menu actions
+        if hasattr(self, 'process_files_action'):
+            self.process_files_action.setEnabled(has_files)
     
     def save_content_as_file(self):
         """Save content to file"""
@@ -1847,6 +2055,44 @@ class ContextLLMApp(QMainWindow):
         msg.setTextFormat(Qt.TextFormat.RichText)
         msg.setText(message)
         msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
+
+    def show_settings(self):
+        """Show settings dialog"""
+        import os
+        
+        msg = QMessageBox(self)
+        msg.setWindowTitle("⚙️ Settings")
+        msg.setIcon(QMessageBox.Icon.Information)
+        
+        settings_text = f"""
+        <h3>⚙️ ContextLLM Settings</h3>
+        
+        <p><strong>Current Configuration:</strong></p>
+        <ul>
+        <li><b>Model:</b> {self.selected_model}</li>
+        <li><b>Comment Removal:</b> {'Enabled' if self.comment_removal_checkbox.isChecked() else 'Disabled'}</li>
+        <li><b>Source Type:</b> {self.current_source_type.title()}</li>
+        <li><b>Window Size:</b> {self.width()}x{self.height()}</li>
+        </ul>
+        
+        <p><strong>Advanced Settings:</strong></p>
+        <ul>
+        <li><b>Theme:</b> Light (Fixed for Windows compatibility)</li>
+        <li><b>GitHub Token:</b> {'Configured' if os.getenv('GITHUB_TOKEN') else 'Not configured'}</li>
+        <li><b>Default Exclusions:</b> {self.exclude_entry.text()}</li>
+        </ul>
+        
+        <hr>
+        <p style="font-size: 11px; color: #666;">
+        💡 Most settings are auto-configured for optimal performance.<br>
+        For GitHub token setup, set the GITHUB_TOKEN environment variable.
+        </p>
+        """
+        
+        msg.setTextFormat(Qt.TextFormat.RichText)
+        msg.setText(settings_text)
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
 
