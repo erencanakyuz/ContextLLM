@@ -46,13 +46,14 @@ Filter specific files and extensions, then enhance your prompts with 20+ profess
 
 ## Quick Start
 
-### Method 1: Automatic Setup (Recommended)
+### Method 1: Automatic Setup (Recommended) DO this First to run:
 
 **Windows:**
 ```cmd
 git clone https://github.com/erencanakyuz/ContextLLM
 cd ContextLLM
 setup.bat
+py main.py or python main.py
 ```
 
 **Linux/Mac:**
@@ -61,6 +62,7 @@ git clone https://github.com/erencanakyuz/ContextLLM
 cd ContextLLM
 chmod +x setup.sh
 ./setup.sh
+py main.py or python main.py
 ```
 
 ### Method 2: Manual Setup

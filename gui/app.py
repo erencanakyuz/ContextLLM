@@ -1538,8 +1538,13 @@ class ContextLLMApp(QMainWindow):
     
     
     def toggle_comment_removal(self):
-        """Toggle comment removal setting"""
+        """Toggle comment removal setting and auto-reprocess if content exists"""
         settings.toggle_comment_removal()
+        
+        # Auto-reprocess if we have selected extensions and a folder
+        selected_extensions = self.get_selected_extensions()
+        if selected_extensions and self.selected_folder:
+            self.process_files()
     
     def update_button_states(self, has_files: bool = False, has_content: bool = False):
         """Update button states"""
