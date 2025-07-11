@@ -313,7 +313,8 @@ class ContextLLMApp(QMainWindow):
         
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
-        scroll_layout.setSpacing(20)
+        scroll_layout.setSpacing(25)  # Increased from 20 to prevent section overlap
+        scroll_layout.setContentsMargins(10, 10, 10, 20)  # Add margins around content
         
         # Source selection section
         self.create_source_section(scroll_layout)
@@ -345,6 +346,8 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("📁 Source Selection")
         group.setObjectName("sourceGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(15)  # Increased from default to prevent overlap
+        layout.setContentsMargins(15, 20, 15, 15)  # Add more top margin
         
         # Local folder button
         self.select_folder_btn = QPushButton("📂 Select Local Folder")
@@ -353,20 +356,31 @@ class ContextLLMApp(QMainWindow):
         self.select_folder_btn.clicked.connect(self.select_folder)
         layout.addWidget(self.select_folder_btn)
         
+        # Add spacing between local and GitHub sections
+        layout.addSpacing(10)
+        
         # GitHub section
         github_frame = QFrame()
         github_frame.setObjectName("githubFrame")
         github_layout = QVBoxLayout(github_frame)
+        github_layout.setSpacing(12)  # Increased spacing between GitHub elements
+        github_layout.setContentsMargins(12, 12, 12, 12)  # Add padding inside frame
         
-        # GitHub URL input
-        github_layout.addWidget(QLabel("🐙 GitHub Repository URL:"))
+        # GitHub URL input with proper spacing
+        github_url_label = QLabel("🐙 GitHub Repository URL:")
+        github_layout.addWidget(github_url_label)
+        github_layout.addSpacing(5)  # Small gap after label
+        
         self.github_url_entry = QLineEdit()
         self.github_url_entry.setPlaceholderText("https://github.com/username/repository")
         self.github_url_entry.setMinimumHeight(36)
         github_layout.addWidget(self.github_url_entry)
         
+        github_layout.addSpacing(8)  # Gap before controls
+        
         # GitHub controls
         github_controls = QHBoxLayout()
+        github_controls.setSpacing(8)  # Space between branch input and button
         
         self.github_branch_entry = QLineEdit()
         self.github_branch_entry.setPlaceholderText("main")
@@ -381,6 +395,8 @@ class ContextLLMApp(QMainWindow):
         
         github_layout.addLayout(github_controls)
         
+        github_layout.addSpacing(8)  # Gap before rate limit status
+        
         # Rate limit status
         self.rate_limit_label = QLabel("👤 Anonymous: Ready")
         self.rate_limit_label.setObjectName("statusText")
@@ -388,11 +404,18 @@ class ContextLLMApp(QMainWindow):
         
         layout.addWidget(github_frame)
         
-        # Exclude patterns
-        layout.addWidget(QLabel("Exclude Patterns (comma-separated):"))
+        # Add spacing between GitHub and exclude patterns
+        layout.addSpacing(12)
+        
+        # Exclude patterns with proper spacing
+        exclude_label = QLabel("Exclude Patterns (comma-separated):")
+        layout.addWidget(exclude_label)
+        layout.addSpacing(5)  # Small gap after label
+        
         self.exclude_entry = QLineEdit()
         self.exclude_entry.setPlaceholderText("e.g., node_modules, .git, __pycache__")
         self.exclude_entry.setText("node_modules, .git, __pycache__, .vscode")
+        self.exclude_entry.setMinimumHeight(36)  # Ensure consistent height
         layout.addWidget(self.exclude_entry)
         
         parent_layout.addWidget(group)
@@ -402,6 +425,8 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("🤖 Estimated Token Model Selection")
         group.setObjectName("modelGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(12)  # Add spacing between elements
+        layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
         self.model_dropdown = QComboBox()
         self.model_dropdown.addItems([
@@ -430,12 +455,17 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("📄 File Extensions")
         group.setObjectName("extensionsGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(12)  # Add spacing between elements
+        layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
         # Toggle all button
         self.toggle_all_btn = QPushButton("Toggle All")
         self.toggle_all_btn.setEnabled(False)
+        self.toggle_all_btn.setMinimumHeight(32)  # Consistent button height
         self.toggle_all_btn.clicked.connect(self.toggle_all_extensions)
         layout.addWidget(self.toggle_all_btn)
+        
+        layout.addSpacing(8)  # Gap before scroll area
         
         # Scroll area for checkboxes
         self.extensions_scroll = QScrollArea()
@@ -445,6 +475,7 @@ class ContextLLMApp(QMainWindow):
         
         self.extensions_widget = QWidget()
         self.extensions_layout = QVBoxLayout(self.extensions_widget)
+        self.extensions_layout.setSpacing(6)  # Space between checkboxes
         self.extensions_scroll.setWidget(self.extensions_widget)
         
         layout.addWidget(self.extensions_scroll)
@@ -456,11 +487,15 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("⚙️ Settings")
         group.setObjectName("settingsGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(12)  # Add spacing between elements
+        layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
         # Comment removal checkbox
         self.comment_removal_checkbox = QCheckBox("Remove Comments & Docstrings")
         self.comment_removal_checkbox.toggled.connect(self.toggle_comment_removal)
         layout.addWidget(self.comment_removal_checkbox)
+        
+        layout.addSpacing(6)  # Gap before info label
         
         # Info label
         info_label = QLabel("💡 Removes comments, docstrings from code files")
@@ -474,41 +509,56 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("📝 Expert Prompt Templates")
         group.setObjectName("templatesGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(12)  # Add spacing between elements
+        layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
         # Section selector
         section_label = QLabel("Category:")
         layout.addWidget(section_label)
+        layout.addSpacing(5)  # Small gap after label
         
         self.section_dropdown = QComboBox()
+        self.section_dropdown.setMinimumHeight(36)  # Consistent height
         self.section_dropdown.currentTextChanged.connect(self.on_section_select)
         layout.addWidget(self.section_dropdown)
+        
+        layout.addSpacing(8)  # Gap between dropdowns
         
         # Template selector
         template_label = QLabel("Template:")
         layout.addWidget(template_label)
+        layout.addSpacing(5)  # Small gap after label
         
         self.template_dropdown = QComboBox()
+        self.template_dropdown.setMinimumHeight(36)  # Consistent height
         self.template_dropdown.currentTextChanged.connect(self.on_template_select)
         layout.addWidget(self.template_dropdown)
+        
+        layout.addSpacing(8)  # Gap before description
         
         # Template description
         self.template_description = QLabel("")
         self.template_description.setWordWrap(True)
         self.template_description.setObjectName("templateDescription")
-        self.template_description.setMaximumHeight(40)
+        self.template_description.setMaximumHeight(50)  # Increased height slightly
         layout.addWidget(self.template_description)
         
         # Update dropdowns
         self.update_template_dropdowns()
         
+        layout.addSpacing(10)  # Gap before buttons
+        
         # Template buttons
         template_buttons = QHBoxLayout()
+        template_buttons.setSpacing(8)  # Space between buttons
         
         apply_btn = QPushButton("✨ Apply Template")
+        apply_btn.setMinimumHeight(32)  # Consistent button height
         apply_btn.clicked.connect(self.apply_template)
         template_buttons.addWidget(apply_btn)
         
         manage_btn = QPushButton("🛠️ Manage")
+        manage_btn.setMinimumHeight(32)  # Consistent button height
         manage_btn.clicked.connect(self.show_template_manager)
         template_buttons.addWidget(manage_btn)
         
@@ -521,6 +571,8 @@ class ContextLLMApp(QMainWindow):
         group = QGroupBox("🚀 Actions")
         group.setObjectName("actionsGroup")
         layout = QVBoxLayout(group)
+        layout.setSpacing(12)  # Add spacing between elements
+        layout.setContentsMargins(15, 20, 15, 15)  # Add margins for better layout
         
         # Process button
         self.process_btn = QPushButton("🔄 Process Files")
@@ -530,29 +582,39 @@ class ContextLLMApp(QMainWindow):
         self.process_btn.clicked.connect(self.process_files)
         layout.addWidget(self.process_btn)
         
+        layout.addSpacing(10)  # Gap before action buttons
+        
         # Action buttons
         action_buttons = QHBoxLayout()
+        action_buttons.setSpacing(8)  # Space between buttons
         
         self.save_btn = QPushButton("💾 Save")
+        self.save_btn.setMinimumHeight(32)  # Consistent button height
         self.save_btn.setEnabled(False)
         self.save_btn.clicked.connect(self.save_content_as_file)
         action_buttons.addWidget(self.save_btn)
         
         self.copy_btn = QPushButton("📋 Copy")
+        self.copy_btn.setMinimumHeight(32)  # Consistent button height
         self.copy_btn.setEnabled(False)
         self.copy_btn.clicked.connect(self.copy_to_clipboard)
         action_buttons.addWidget(self.copy_btn)
         
         layout.addLayout(action_buttons)
         
+        layout.addSpacing(8)  # Gap before utility buttons
+        
         # Utility buttons
         utility_buttons = QHBoxLayout()
+        utility_buttons.setSpacing(8)  # Space between buttons
         
         self.refresh_btn = QPushButton("🔄 Refresh")
+        self.refresh_btn.setMinimumHeight(32)  # Consistent button height
         self.refresh_btn.clicked.connect(self.refresh_current_folder)
         utility_buttons.addWidget(self.refresh_btn)
         
         self.tree_btn = QPushButton("🌳 Tree View")
+        self.tree_btn.setMinimumHeight(32)  # Consistent button height
         self.tree_btn.setEnabled(False)
         self.tree_btn.clicked.connect(self.show_tree_view)
         utility_buttons.addWidget(self.tree_btn)
@@ -712,6 +774,61 @@ class ContextLLMApp(QMainWindow):
         self.github_url_entry.setToolTip("Enter GitHub repository URL (e.g., https://github.com/user/repo)")
         self.github_branch_entry.setToolTip("Specify branch name (default: main)")
         self.exclude_entry.setToolTip("Comma-separated patterns to exclude from processing")
+        
+    def force_light_palette(self):
+        """Force light color palette to override Windows dark mode"""
+        from PyQt6.QtGui import QPalette, QColor
+        from PyQt6.QtCore import Qt
+        
+        try:
+            palette = QPalette()
+            colors = settings.get_theme_colors()
+            
+            # Convert string colors to QColor objects
+            bg_primary = QColor(colors['bg_primary'])
+            bg_secondary = QColor(colors['bg_secondary'])
+            text_primary = QColor(colors['text_primary'])
+            primary_color = QColor(colors['primary'])
+            
+            # Set window colors
+            palette.setColor(QPalette.ColorRole.Window, bg_primary)
+            palette.setColor(QPalette.ColorRole.WindowText, text_primary)
+            
+            # Set base colors (for input fields)
+            palette.setColor(QPalette.ColorRole.Base, bg_primary)
+            palette.setColor(QPalette.ColorRole.AlternateBase, bg_secondary)
+            
+            # Set text colors
+            palette.setColor(QPalette.ColorRole.Text, text_primary)
+            palette.setColor(QPalette.ColorRole.BrightText, text_primary)
+            
+            # Set button colors
+            palette.setColor(QPalette.ColorRole.Button, bg_secondary)
+            palette.setColor(QPalette.ColorRole.ButtonText, text_primary)
+            
+            # Set highlight colors
+            palette.setColor(QPalette.ColorRole.Highlight, primary_color)
+            palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#ffffff"))
+            
+            # Set disabled colors
+            text_muted = QColor(colors['text_muted'])
+            palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText, text_muted)
+            palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text, text_muted)
+            palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText, text_muted)
+            
+            # Apply the palette to the application
+            QApplication.instance().setPalette(palette)
+            
+            self.logger.info("✅ Successfully forced light palette to override Windows dark mode")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to force light palette: {e}")
+            # Fallback - try to disable system theme detection
+            try:
+                QApplication.instance().setStyle("Fusion")
+                self.logger.info("Applied Fusion style as fallback")
+            except:
+                pass
         
     def setup_styles(self):
         """Setup modern light theme styling using theme system"""
@@ -963,44 +1080,6 @@ class ContextLLMApp(QMainWindow):
             }}
         """)
         self.logger.info("Applied light theme styling using theme system")
-    
-    def force_light_palette(self):
-        """Force light palette to override Windows dark mode"""
-        from PyQt6.QtGui import QPalette, QColor
-        
-        # Create light palette
-        palette = QPalette()
-        
-        # Define light colors from config
-        colors = settings.get_theme_colors()
-        
-        # Background colors
-        palette.setColor(QPalette.ColorRole.Window, QColor(colors['bg_primary']))
-        palette.setColor(QPalette.ColorRole.WindowText, QColor(colors['text_primary']))
-        palette.setColor(QPalette.ColorRole.Base, QColor(colors['bg_primary']))
-        palette.setColor(QPalette.ColorRole.AlternateBase, QColor(colors['bg_secondary']))
-        
-        # Text colors  
-        palette.setColor(QPalette.ColorRole.Text, QColor(colors['text_primary']))
-        palette.setColor(QPalette.ColorRole.BrightText, QColor(colors['text_primary']))
-        palette.setColor(QPalette.ColorRole.ButtonText, QColor(colors['text_primary']))
-        
-        # Button colors
-        palette.setColor(QPalette.ColorRole.Button, QColor(colors['bg_tertiary']))
-        palette.setColor(QPalette.ColorRole.ButtonText, QColor(colors['text_primary']))
-        
-        # Highlight colors
-        palette.setColor(QPalette.ColorRole.Highlight, QColor(colors['primary']))
-        palette.setColor(QPalette.ColorRole.HighlightedText, QColor('#ffffff'))
-        
-        # Disabled colors
-        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText, QColor(colors['text_muted']))
-        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text, QColor(colors['text_muted']))
-        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText, QColor(colors['text_muted']))
-        
-        # Apply to application
-        QApplication.instance().setPalette(palette)
-        self.logger.info("✅ Forced light palette to override system dark mode")
     
     def select_folder(self):
         """Select folder dialog"""
