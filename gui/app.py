@@ -717,6 +717,9 @@ class ContextLLMApp(QMainWindow):
         """Setup modern light theme styling using theme system"""
         colors = settings.get_theme_colors()
         
+        # FORCE LIGHT PALETTE - Override Windows dark mode
+        self.force_light_palette()
+        
         self.setStyleSheet(f"""
             QMainWindow {{
                 background-color: {colors['bg_primary']};
@@ -960,6 +963,44 @@ class ContextLLMApp(QMainWindow):
             }}
         """)
         self.logger.info("Applied light theme styling using theme system")
+    
+    def force_light_palette(self):
+        """Force light palette to override Windows dark mode"""
+        from PyQt6.QtGui import QPalette, QColor
+        
+        # Create light palette
+        palette = QPalette()
+        
+        # Define light colors from config
+        colors = settings.get_theme_colors()
+        
+        # Background colors
+        palette.setColor(QPalette.ColorRole.Window, QColor(colors['bg_primary']))
+        palette.setColor(QPalette.ColorRole.WindowText, QColor(colors['text_primary']))
+        palette.setColor(QPalette.ColorRole.Base, QColor(colors['bg_primary']))
+        palette.setColor(QPalette.ColorRole.AlternateBase, QColor(colors['bg_secondary']))
+        
+        # Text colors  
+        palette.setColor(QPalette.ColorRole.Text, QColor(colors['text_primary']))
+        palette.setColor(QPalette.ColorRole.BrightText, QColor(colors['text_primary']))
+        palette.setColor(QPalette.ColorRole.ButtonText, QColor(colors['text_primary']))
+        
+        # Button colors
+        palette.setColor(QPalette.ColorRole.Button, QColor(colors['bg_tertiary']))
+        palette.setColor(QPalette.ColorRole.ButtonText, QColor(colors['text_primary']))
+        
+        # Highlight colors
+        palette.setColor(QPalette.ColorRole.Highlight, QColor(colors['primary']))
+        palette.setColor(QPalette.ColorRole.HighlightedText, QColor('#ffffff'))
+        
+        # Disabled colors
+        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.WindowText, QColor(colors['text_muted']))
+        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Text, QColor(colors['text_muted']))
+        palette.setColor(QPalette.ColorGroup.Disabled, QPalette.ColorRole.ButtonText, QColor(colors['text_muted']))
+        
+        # Apply to application
+        QApplication.instance().setPalette(palette)
+        self.logger.info("✅ Forced light palette to override system dark mode")
     
     def select_folder(self):
         """Select folder dialog"""
@@ -1864,8 +1905,21 @@ def main():
         
         # Set application style for better Windows integration
         if platform.system() == "Windows":
-            app.setStyle("Fusion")  # Better theme support on Windows
-            logger.info("Set Fusion style for Windows")
+            try:
+                # Try to detect Windows version for better compatibility
+                import sys
+                win_version = sys.getwindowsversion()
+                
+                if win_version.build >= 22000:  # Windows 11
+                    app.setStyle("Fusion")  # Works great on Win11
+                    logger.info("Set Fusion style for Windows 11")
+                else:  # Windows 10 and older
+                    app.setStyle("WindowsVista")  # More compatible with Win10
+                    logger.info("Set WindowsVista style for Windows 10")
+            except:
+                # Safe fallback
+                app.setStyle("Windows")
+                logger.info("Set fallback Windows style")
         
         logger.info("Creating main application window")
         window = ContextLLMApp()
